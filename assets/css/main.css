@@ -407,6 +407,43 @@ h6 {
 }
 
 /*--------------------------------------------------------------
+  Square / Uniform Media for Portfolio
+  - Ensures portfolio images and videos share the same square size
+  - Keeps modal video (`#modalVideo`) responsive and excluded
+--------------------------------------------------------------*/
+:root {
+  --portfolio-square-size: 360px; /* adjust as needed */
+}
+
+/* Target only media inside portfolio items to avoid global side-effects */
+.portfolio-wrap img,
+.portfolio-wrap video,
+.portfolio-wrap .video-thumbnail video {
+  width: var(--portfolio-square-size) !important;
+  height: var(--portfolio-square-size) !important;
+  object-fit: cover;
+  display: block;
+  border: 4px solid rgba(255,255,255,0.08);
+  border-radius: 4px; /* square-ish corners; set to 0 for perfectly square corners */
+}
+
+/* keep the modal video free to scale full-width */
+#modalVideo {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 80vh !important;
+  object-fit: contain !important;
+}
+
+/* Utility class if you want to force the square style elsewhere */
+.square-media {
+  width: var(--portfolio-square-size) !important;
+  height: var(--portfolio-square-size) !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+/*--------------------------------------------------------------
 # Scroll Top Button
 --------------------------------------------------------------*/
 .scroll-top {
@@ -1518,6 +1555,11 @@ section,
   margin-bottom: 0;
 }
 
+/* Ensure resume text is visible when the section background is light/white */
+
+/* Final override: force readable dark text inside the resume section (higher specificity) */
+
+
 @media (max-width: 991.98px) {
   .resume .resume-side {
     margin-bottom: 2rem;
@@ -2088,11 +2130,13 @@ section,
 # Contact Section
 --------------------------------------------------------------*/
 .contact .info-box {
-  background-color: var(--accent-color);
-  color: var(--contrast-color);
+  background-color: rgba(255,255,255,0.60); /* semi-transparent white */
+  color: rgba(17,17,17,0.92); /* dark gray text for readability (not pure black) */
   padding: 3rem;
   border-radius: 1rem;
   height: 100%;
+  border: 1px solid rgba(0,0,0,0.06);
+  backdrop-filter: blur(6px);
 }
 
 .contact .info-box h3 {
@@ -2113,12 +2157,43 @@ section,
 }
 
 .contact .info-box a {
-  color: var(--contrast-color);
+  color: rgba(17,17,17,0.92);
 }
 
 @media (max-width: 992px) {
   .contact .info-box {
     padding: 1.5rem;
+  }
+}
+
+/* Mobile visibility fixes for contact info */
+@media (max-width: 576px) {
+  .contact .info-box {
+    background-color: rgba(255,255,255,0.88) !important; /* slightly more opaque on very small screens */
+    color: rgba(221, 212, 212, 0.95) !important;
+    padding: 1.25rem !important;
+    position: relative !important;
+    z-index: 2 !important; /* ensure it isn't unintentionally covered */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
+  }
+
+  .contact .info-item {
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .contact .info-item .content p {
+    font-size: 1rem;
+    opacity: 1;
+  }
+
+  .contact .info-item .icon-box {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .contact .info-item .content h4 {
+    font-size: 1.125rem;
   }
 }
 
@@ -2175,6 +2250,9 @@ section,
   border-radius: 1rem;
   height: 100%;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
+}
+#lol {
+  color: rgb(0, 0, 0);
 }
 
 @media (max-width: 992px) {
@@ -2281,6 +2359,14 @@ section,
   }
   .contact-info li a, .contact-info li span, .contact-info li {
     font-size: 9px !important;
+  }
+}
+
+/* Ensure resume-side contact info is visible on small screens */
+@media (max-width: 576px) {
+  .resume .resume-side .contact-info li,
+  .resume .resume-side .contact-info li * {
+    color: rgba(0,0,0,0.95) !important; /* force black text */
   }
 }
 
